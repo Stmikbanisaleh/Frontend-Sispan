@@ -11,14 +11,15 @@ class Berita extends CI_Controller
 
     public function index()
     {
-        $data['user'] = $this->db->get_where('msuser', ['email' =>
-        $this->session->userdata('email')])->row_array();
+        $data['user'] = $this->lapan_api_library->call3('users/getuserbyemail', ['token' => TOKEN, $this->session->userdata('email')]);
 
         $this->load->library('pagination');
 
-        $config['base_url'] = 'http://localhost/pusispan/sispan/berita/index';
+        $config['base_url'] = base_url().'berita/index';
         //$config['base_url'] = 'http://pusispan.stmik-banisaleh.com/pusispan/sispan/berita/index';
-        $config['total_rows'] = $this->m_berita->hitungJumlahBerita();
+        $getlist_berita = $this->lapan_api_library->call('berita/getlistberita', ['token' => TOKEN]);
+        $config['total_rows'] = count($getlist_berita['rows']);
+
         $config['per_page'] = 4;
 
         $config['full_tag_open'] = '<nav><ul class="pagination ">';
@@ -49,14 +50,39 @@ class Berita extends CI_Controller
         $config['attributes'] = array('class' => 'page-link');
 
         $this->pagination->initialize($config);
+        
         $data['start'] = $this->uri->segment(3);
-        $data['getBerita'] = $this->m_berita->getBerita($config['per_page'], $data['start']);
+        $data_paging = [
+            'token' => TOKEN,
+            'limit' => $config['per_page'],
+            'start' => $data['start']
+        ];
+        $getlist_paging = $this->lapan_api_library->call('berita/getberitapaging', $data_paging);
+        $data['getBerita'] = $getlist_paging;
 
-        $data['link'] = $this->db->get('link_terkait')->result_array();
-        $data['akses'] = $this->db->get('akses_cepat')->result_array();
+        // print_r(json_encode($data['getBerita']));exit;
+
+
+        //=============================================================================================================================//
+
         $data['uri'] = $this->uri->segment(1);
-        $data['menu'] = $this->db->get_where('menu', array('id_parent' => '', 'id_posisi' => 3))->result_array();
-        $data['submenu'] = $this->db->get('menu')->result_array();
+
+        $getlistlink = $this->lapan_api_library->call('link/getlink', ['token' => TOKEN]);
+        $data['link'] = $getlistlink['rows'];
+
+        $getaksescepat = $this->lapan_api_library->call('aksescepat/getaksescepat', ['token' => TOKEN]);
+        $data['akses'] = $getaksescepat['rows'];
+
+        $data_menuwhere = [
+            'token' => TOKEN,
+            'id_parent' => '',
+            'id_posisi' => 3
+        ];
+        $getmenuwhere = $this->lapan_api_library->call('menu/getmenuwhere', $data_menuwhere);
+        $data['menu'] = $getmenuwhere['rows'];
+
+        $getmenu = $this->lapan_api_library->call('menu/getmenu', ['token' => TOKEN]);
+        $data['submenu'] = $getmenu['rows'];
 
         $this->load->view('template/header', $data);
         $this->load->view('berita/index', $data);

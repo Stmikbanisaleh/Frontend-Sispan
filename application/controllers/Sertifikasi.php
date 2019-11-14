@@ -15,13 +15,28 @@ class Sertifikasi extends CI_Controller
 
     public function index()
     {
-        $data['menu'] = $this->m_menu->getMenu();
-        $data['submenu'] = $this->m_menu->getSubMenu();
-
-        $data['link'] = $this->m_footer->getLink();
-        $data['akses'] = $this->m_footer->getAkses();
+        $data['user'] = $this->lapan_api_library->call3('users/getuserbyemail', ['token' => TOKEN, $this->session->userdata('email')]);
+        
+        //=============================================================================================================================//
 
         $data['uri'] = $this->uri->segment(1);
+
+        $getlistlink = $this->lapan_api_library->call('link/getlink', ['token' => TOKEN]);
+        $data['link'] = $getlistlink['rows'];
+
+        $getaksescepat = $this->lapan_api_library->call('aksescepat/getaksescepat', ['token' => TOKEN]);
+        $data['akses'] = $getaksescepat['rows'];
+
+        $data_menuwhere = [
+            'token' => TOKEN,
+            'id_parent' => '',
+            'id_posisi' => 3
+        ];
+        $getmenuwhere = $this->lapan_api_library->call('menu/getmenuwhere', $data_menuwhere);
+        $data['menu'] = $getmenuwhere['rows'];
+
+        $getmenu = $this->lapan_api_library->call('menu/getmenu', ['token' => TOKEN]);
+        $data['submenu'] = $getmenu['rows'];
 
         $this->load->view('template/header', $data);
         $this->load->view('template/footer', $data);
@@ -29,16 +44,28 @@ class Sertifikasi extends CI_Controller
 
     public function cek_sertifikasi()
     {
-        $data['user'] = $this->db->get_where('msuser', ['email' =>
-        $this->session->userdata('email')])->row_array();
+        $data['user'] = $this->lapan_api_library->call3('users/getuserbyemail', ['token' => TOKEN, $this->session->userdata('email')]);
 
-        $data['menu'] = $this->m_menu->getMenu();
-        $data['submenu'] = $this->m_menu->getSubMenu();
-
-        $data['link'] = $this->m_footer->getLink();
-        $data['akses'] = $this->m_footer->getAkses();
+        //=============================================================================================================================//
 
         $data['uri'] = $this->uri->segment(1);
+
+        $getlistlink = $this->lapan_api_library->call('link/getlink', ['token' => TOKEN]);
+        $data['link'] = $getlistlink['rows'];
+
+        $getaksescepat = $this->lapan_api_library->call('aksescepat/getaksescepat', ['token' => TOKEN]);
+        $data['akses'] = $getaksescepat['rows'];
+
+        $data_menuwhere = [
+            'token' => TOKEN,
+            'id_parent' => '',
+            'id_posisi' => 3
+        ];
+        $getmenuwhere = $this->lapan_api_library->call('menu/getmenuwhere', $data_menuwhere);
+        $data['menu'] = $getmenuwhere['rows'];
+
+        $getmenu = $this->lapan_api_library->call('menu/getmenu', ['token' => TOKEN]);
+        $data['submenu'] = $getmenu['rows'];
 
         $this->load->view('template/header', $data);
         $this->load->view('cek_sertifikasi', $data);
@@ -47,31 +74,56 @@ class Sertifikasi extends CI_Controller
 
     public function detail_sertifikasi()
     {
-        $data['user'] = $this->db->get_where('msuser', ['email' =>
-        $this->session->userdata('email')])->row_array();
+        $data['user'] = $this->lapan_api_library->call3('users/getuserbyemail', ['token' => TOKEN, $this->session->userdata('email')]);
 
         $this->form_validation->set_rules('no_sertifikasi', 'Nomor Sertifikasi', 'required');
 
         if ($this->form_validation->run($this) == false) {
-            $data['menu'] = $this->m_menu->getMenu();
-            $data['submenu'] = $this->m_menu->getSubMenu();
-
-            $data['link'] = $this->m_footer->getLink();
-            $data['akses'] = $this->m_footer->getAkses();
+            //=============================================================================================================================//
 
             $data['uri'] = $this->uri->segment(1);
+
+            $getlistlink = $this->lapan_api_library->call('link/getlink', ['token' => TOKEN]);
+            $data['link'] = $getlistlink['rows'];
+
+            $getaksescepat = $this->lapan_api_library->call('aksescepat/getaksescepat', ['token' => TOKEN]);
+            $data['akses'] = $getaksescepat['rows'];
+
+            $data_menuwhere = [
+                'token' => TOKEN,
+                'id_parent' => '',
+                'id_posisi' => 3
+            ];
+            $getmenuwhere = $this->lapan_api_library->call('menu/getmenuwhere', $data_menuwhere);
+            $data['menu'] = $getmenuwhere['rows'];
+
+            $getmenu = $this->lapan_api_library->call('menu/getmenu', ['token' => TOKEN]);
+            $data['submenu'] = $getmenu['rows'];
 
             $this->load->view('template/header', $data);
             $this->load->view('cek_sertifikasi', $data);
             $this->load->view('template/footer', $data);
         } else {
-            $data['menu'] = $this->m_menu->getMenu();
-            $data['submenu'] = $this->m_menu->getSubMenu();
-
-            $data['link'] = $this->m_footer->getLink();
-            $data['akses'] = $this->m_footer->getAkses();
+            //=============================================================================================================================//
 
             $data['uri'] = $this->uri->segment(1);
+
+            $getlistlink = $this->lapan_api_library->call('link/getlink', ['token' => TOKEN]);
+            $data['link'] = $getlistlink['rows'];
+
+            $getaksescepat = $this->lapan_api_library->call('aksescepat/getaksescepat', ['token' => TOKEN]);
+            $data['akses'] = $getaksescepat['rows'];
+
+            $data_menuwhere = [
+                'token' => TOKEN,
+                'id_parent' => '',
+                'id_posisi' => 3
+            ];
+            $getmenuwhere = $this->lapan_api_library->call('menu/getmenuwhere', $data_menuwhere);
+            $data['menu'] = $getmenuwhere['rows'];
+
+            $getmenu = $this->lapan_api_library->call('menu/getmenu', ['token' => TOKEN]);
+            $data['submenu'] = $getmenu['rows'];
 
             $no = $this->input->post('no_sertifikasi');
             $data['sertifikasi'] = $this->m_sertifikasi->getSertifikasi($no);
