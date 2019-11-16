@@ -8,9 +8,6 @@ class Tentang extends CI_Controller
     {
         parent::__construct();
         $this->load->library('form_validation');
-        $this->load->model('Menu_model', 'm_menu');
-        $this->load->model('Footer_model', 'm_footer');
-        $this->load->model('Tentang_model', 'm_tentang');
     }
 
 

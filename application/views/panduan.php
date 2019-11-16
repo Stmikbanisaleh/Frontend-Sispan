@@ -6,8 +6,8 @@
         <div class="col-lg-10">
             <?php foreach ($dokpanduan as $dp) { ?>
                 <hr class="hr-xl">
-                <h2><?= $dp['NAMA'] ?></h2>
-                <object data="<?= base_url() ?>assets/document/panduan/<?= $dp['NAMA_FILE'] ?>" type="application/pdf" width="100%" height="800px">
+                <h2><?= $dp['nama'] ?></h2>
+                <object data="<?= base_url() ?>assets/document/panduan/<?= $dp['nama_file'] ?>" type="application/pdf" width="100%" height="800px">
                 </object>
                 <hr class="hr-xl">
             <?php } ?>

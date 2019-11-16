@@ -7,9 +7,6 @@ class Home extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('Home_model', 'm_home');
-        $this->load->model('Menu_model', 'm_menu');
-        $this->load->model('Footer_model', 'm_footer');
     }
 
     public function index()

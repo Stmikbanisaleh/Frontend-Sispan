@@ -6,7 +6,6 @@ class Berita extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('Berita_model', 'm_berita');
     }
 
     public function index()

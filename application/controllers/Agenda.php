@@ -6,7 +6,6 @@ class Agenda extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('Agenda_model', 'm_agenda');
     }
 
     public function index()

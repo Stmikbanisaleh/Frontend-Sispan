@@ -61,12 +61,12 @@ class Login extends CI_Controller
             } else {
                 $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
                     Password salah!</div>');
-                redirect('auth');
+                redirect('login');
             }
         } else {
             $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
             Email belum terdaftar</div>');
-            redirect('auth');
+            redirect('login');
         }
     }
 
