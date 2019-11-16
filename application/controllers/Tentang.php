@@ -83,8 +83,7 @@ class Tentang extends CI_Controller
                 'date' => date('Y-m-d h:i:s')
             ];
             $input = $this->lapan_api_library->call('visitormessage/addmessage', $data_input);
-
-            $this->m_tentang->saveMessage();
+            
             $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
             Pesan telah dikirim!</div>');
             redirect('tentang');
