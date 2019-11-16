@@ -16,16 +16,28 @@ class Tentang extends CI_Controller
 
     public function index()
     {
-        $data['user'] = $this->db->get_where('msuser', ['email' =>
-        $this->session->userdata('email')])->row_array();
+        $data['user'] = $this->lapan_api_library->call3('users/getuserbyemail', ['token' => TOKEN, $this->session->userdata('email')]);
 
-        $data['menu'] = $this->m_menu->getMenu();
-        $data['submenu'] = $this->m_menu->getSubMenu();
-
-        $data['link'] = $this->m_footer->getLink();
-        $data['akses'] = $this->m_footer->getAkses();
+        //=============================================================================================================================//
 
         $data['uri'] = $this->uri->segment(1);
+
+        $getlistlink = $this->lapan_api_library->call('link/getlink', ['token' => TOKEN]);
+        $data['link'] = $getlistlink['rows'];
+
+        $getaksescepat = $this->lapan_api_library->call('aksescepat/getaksescepat', ['token' => TOKEN]);
+        $data['akses'] = $getaksescepat['rows'];
+
+        $data_menuwhere = [
+            'token' => TOKEN,
+            'id_parent' => '',
+            'id_posisi' => 3
+        ];
+        $getmenuwhere = $this->lapan_api_library->call('menu/getmenuwhere', $data_menuwhere);
+        $data['menu'] = $getmenuwhere['rows'];
+
+        $getmenu = $this->lapan_api_library->call('menu/getmenu', ['token' => TOKEN]);
+        $data['submenu'] = $getmenu['rows'];
 
         $this->load->view('template/header', $data);
         $this->load->view('tentang', $data);
@@ -39,18 +51,39 @@ class Tentang extends CI_Controller
         $this->form_validation->set_rules('message', 'Pesan', 'required');
 
         if ($this->form_validation->run($this) == false) {
-            $data['menu'] = $this->m_menu->getMenu();
-            $data['submenu'] = $this->m_menu->getSubMenu();
+             $data['uri'] = $this->uri->segment(1);
 
-            $data['link'] = $this->m_footer->getLink();
-            $data['akses'] = $this->m_footer->getAkses();
+            $getlistlink = $this->lapan_api_library->call('link/getlink', ['token' => TOKEN]);
+            $data['link'] = $getlistlink['rows'];
 
-            $data['uri'] = $this->uri->segment(1);
+            $getaksescepat = $this->lapan_api_library->call('aksescepat/getaksescepat', ['token' => TOKEN]);
+            $data['akses'] = $getaksescepat['rows'];
+
+            $data_menuwhere = [
+                'token' => TOKEN,
+                'id_parent' => '',
+                'id_posisi' => 3
+            ];
+            $getmenuwhere = $this->lapan_api_library->call('menu/getmenuwhere', $data_menuwhere);
+            $data['menu'] = $getmenuwhere['rows'];
+
+            $getmenu = $this->lapan_api_library->call('menu/getmenu', ['token' => TOKEN]);
+            $data['submenu'] = $getmenu['rows'];
 
             $this->load->view('template/header', $data);
             $this->load->view('tentang', $data);
             $this->load->view('template/footer', $data);
         } else {
+            $data_input = [
+                'token' => TOKEN,
+                'name' => htmlspecialchars($this->input->post('name', true)),
+                'email' => htmlspecialchars($this->input->post('email', true)),
+                'subject' => htmlspecialchars($this->input->post('subject', true)),
+                'message' => htmlspecialchars($this->input->post('message', true)),
+                'date' => date('Y-m-d h:i:s')
+            ];
+            $input = $this->lapan_api_library->call('visitormessage/addmessage', $data_input);
+
             $this->m_tentang->saveMessage();
             $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
             Pesan telah dikirim!</div>');
