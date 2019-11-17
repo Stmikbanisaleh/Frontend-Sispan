@@ -90,17 +90,33 @@ class Berita extends CI_Controller
 
     public function read($seo)
     {
-        $data['user'] = $this->db->get_where('msuser', ['email' =>
-        $this->session->userdata('email')])->row_array();
+        $data['user'] = $this->lapan_api_library->call3('users/getuserbyemail', ['token' => TOKEN, $this->session->userdata('email')]);
 
-        $data['getBeritaList'] = $this->m_berita->getBeritaList(5);
-        $data['getBeritaDetail'] = $this->m_berita->getBeritaDetail($seo);
 
-        $data['link'] = $this->db->get('link_terkait')->result_array();
-        $data['akses'] = $this->db->get('akses_cepat')->result_array();
+        $getlist_berita = $this->lapan_api_library->call('berita/getlistberita', ['token' => TOKEN]);
+        $data['getBeritaList'] = $getlist_berita['rows'];
+        $get_beritadetail = $this->lapan_api_library->call('berita/getberitadetail', ['token' => TOKEN, 'judul_seo' => $seo]);
+        // print_r($get_beritadetail);exit;
+        $data['getBeritaDetail'] = $get_beritadetail['rows'];
+
         $data['uri'] = $this->uri->segment(1);
-        $data['menu'] = $this->db->get_where('menu', array('id_parent' => '', 'id_posisi' => 3))->result_array();
-        $data['submenu'] = $this->db->get('menu')->result_array();
+
+        $getlistlink = $this->lapan_api_library->call('link/getlink', ['token' => TOKEN]);
+        $data['link'] = $getlistlink['rows'];
+
+        $getaksescepat = $this->lapan_api_library->call('aksescepat/getaksescepat', ['token' => TOKEN]);
+        $data['akses'] = $getaksescepat['rows'];
+       
+        $data_menuwhere = [
+            'token' => TOKEN,
+            'id_parent' => '',
+            'id_posisi' => 3
+        ];
+        $getmenuwhere = $this->lapan_api_library->call('menu/getmenuwhere', $data_menuwhere);
+        $data['menu'] = $getmenuwhere['rows'];
+
+        $getmenu = $this->lapan_api_library->call('menu/getmenu', ['token' => TOKEN]);
+        $data['submenu'] = $getmenu['rows'];
 
         $this->load->view('template/header', $data);
         $this->load->view('berita/detail');

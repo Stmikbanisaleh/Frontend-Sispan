@@ -78,19 +78,7 @@
                         <div class="col-sm-8 col-xs-8">
 
                         </div>
-                        <div class="col-sm-4 col-xs-4 clearfix">
-                            <?php if ($user) { ?>
-                                <ul class="topbar-list topbar-log_reg pull-right visible-sm-block visible-md-block visible-lg-block">
-                                    <img height="25px" width="25px" src="http://localhost/pusispan/assets/img_user/<?= $user['image']; ?>">
-                                    <li class="cd-log_reg home"><?= $user['name']; ?></li>
-                                    <a class="btn btn-xs btn-default" href="<?= base_url('login/logout') ?>">Logout</a>
-                                </ul>
-                            <?php } else { ?>
-                                <!-- <ul class="topbar-list topbar-log_reg pull-right visible-sm-block visible-md-block visible-lg-block">
-                                    <li class="cd-log_reg home"><a href="<?= base_url('login'); ?>">Login</a></li>
-                                </ul> -->
-                            <?php } ?>
-                        </div>
+                    
 
                         <br>
                     </div>

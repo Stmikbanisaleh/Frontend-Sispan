@@ -8,6 +8,7 @@
                 <hr class="hr-xl">
                 <h2><?= $dp['nama'] ?></h2>
                 <object data="<?= base_url() ?>assets/document/panduan/<?= $dp['nama_file'] ?>" type="application/pdf" width="100%" height="800px">
+                <!-- <object data="<?= URL_API_DOWNLOADPDF. $dp['nama_file'] ?>" type="application/pdf" width="100%" height="800px"> -->
                 </object>
                 <hr class="hr-xl">
             <?php } ?>

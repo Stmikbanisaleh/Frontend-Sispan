@@ -11,8 +11,8 @@ class Home extends CI_Controller
 
     public function index()
     {
-        $data['user'] = $this->lapan_api_library->call3('users/getuserbyemail', ['token' => TOKEN, $this->session->userdata('email')]);
-
+        // $data['user'] = $this->lapan_api_library->call3('users/getuserbyemail', ['token' => TOKEN, $this->session->userdata('email')]);
+        
         $getKegiatanSispan = $this->lapan_api_library->call('kegiatan/getkegiatansispan', ['token' => TOKEN]);
         $data['ksispan'] = $getKegiatanSispan['rows'][0];
 
